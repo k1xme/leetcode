@@ -1,0 +1,48 @@
+# Definition for singly-linked list.
+class ListNode:
+     def __init__(self, x):
+         self.val = x
+         self.next = None
+
+# Questions:
+# 1. Will there be duplicate elements?
+
+# Ideas:
+# Using resursion to solve this problem is more elegant.
+
+class Solution:
+    # @param {ListNode} head
+    # @param {integer} val
+    # @return {ListNode}
+    def removeElements(self, head, val):
+        while head:
+            if head.val == val:
+                head = head.next
+            else:
+                break
+        
+        if not head:
+            return None
+        
+        parent = head
+        cur = head.next
+        
+        while cur:
+            if cur.val == val:
+                parent.next = cur.next
+            else:
+                parent = cur
+            
+            cur = cur.next
+        
+        return head
+
+s = Solution()
+head = ListNode(1)
+head.next = ListNode(1)
+
+rest = s.removeElements(head, 1)
+while rest:
+    print rest.val
+    rest = rest.next
+

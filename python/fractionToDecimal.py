@@ -31,10 +31,8 @@ class Solution:
     # @param {integer} denominator
     # @return {string}
     def fractionToDecimal(self, numerator, denominator):
-        if numerator == 0:
-            return "0"
-        elif numerator == denominator:
-            return "1"
+        if numerator == 0: return "0"
+        if numerator == denominator: return "1"
 
         # All the remainers and the coresponding index in result seen so far.
         seen_remainers = {}
@@ -47,17 +45,17 @@ class Solution:
         result = sign + str(numerator/denominator)
         remainer = numerator % denominator
 
-        if remainer != 0:
-            result += "."
-        else:
-            return result
+        if remainer == 0:return result
+        result += "."
+        
 
         # Record the remainer and its index in result.
         seen_remainers[remainer] = len(result)
 
         while remainer != 0:
-            result += str(remainer*10 / denominator)
-            remainer = remainer*10 % denominator
+            remainer *= 10 
+            result += str(remainer / denominator)
+            remainer = remainer % denominator
 
             # If the reaminer has shown up before, then we find a pattern.
             if remainer in seen_remainers:

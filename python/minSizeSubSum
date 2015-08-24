@@ -1,0 +1,22 @@
+class Solution:
+    # @param {integer} s
+    # @param {integer[]} nums
+    # @return {integer}
+    def minSubArrayLen(self, s, nums):
+        if not nums: return 0
+        
+        ps = l = r = 0
+        minLen = (1<<31) - 1
+        
+        while r < len(nums):
+            ps += nums[r]
+            r += 1
+            while ps >= s:
+                minLen = min(minLen, r-l)
+                ps -= nums[l]
+                l += 1
+            
+
+        return minLen if minLen != (1<<31) - 1 else 0
+s = Solution()
+print s.minSubArrayLen(11, [1,2,3,4,11])
