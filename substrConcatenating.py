@@ -4,40 +4,65 @@
 # What if words is [].
 
 # NOTE: There could be duplicates in `words`.
-class Solution:
-    # @param {string} s
-    # @param {string[]} words
-    # @return {integer[]}
+# Edge cases: "barfoofoosxxxx", ["bar", "foo"]
+
+# Edge cases: "barfoofoosxxxx", ["bar", "foo"]
+
+class Solution(object):
     def findSubstring(self, s, words):
-        if not s: return []
+        """
+        :type s: str
+        :type words: List[str]
+        :rtype: List[int]
+        """
+        if not words : return []
         
         wordLen = len(words[0])
         wordNum = len(words)
-        n = len(s)
-        wordsCount = {}
-        result = []
-        left = 0
-
-        for word in words:
-            if word not in wordsCount: wordsCount[word] = 0
-            wordsCount[word] += 1
         
-        while left <= n - wordNum*wordLen:
-            foundWords = wordsCount.copy()
-            right = left
-            while right - left < wordNum*wordLen:
-                word = s[right:right+wordLen]
-                if word not in foundWords or foundWords[word] == 0: break
-                right += wordLen
-                foundWords[word] -= 1
+        n = len(s)
+        if n < wordLen * wordNum: return []
+        
+        rst = []
+        wordsToFind = {}
+        wordsFound = {}
+        for word in words:
+            if word not in wordsToFind: wordsToFind[word] = 1
+            else: wordsToFind[word] += 1
+        
+        l = 0
+        r = l + wordLen
 
-            if right - left == wordNum*wordLen:
-                result.append(left)
-                left += 1
-                continue
-            left += wordLen
+        while l < n - wordLen*wordNum + 1:
+            word = s[r-wordLen:r]
             
-        return result
+            if word not in wordsToFind:
+                l = r - wordLen + 1
+                r += 1
+                wordsFound = {}
+                continue
+            
+            if word not in wordsFound: wordsFound[word] = 1
+            else: wordsFound[word] += 1
+            
+            if wordsFound[word] > wordsToFind[word]:
+                wordsFound = {}
+                l += 1
+                r = l + wordLen
+                continue
+            
+            if r - l == wordNum*wordLen:
+                rst.append(l)
+                wordsFound = {}
+                l += 1
+                r = l + wordLen
+                continue
+            r += wordLen
+        return rst
+
+
 
 s = Solution()
-print s.findSubstring("aaaaaaaa", ["aa","aa","aa"])
+print s.findSubstring("aaaaaaaa" ,["aa","aa","aa"])
+print s.findSubstring("ababaab" ,["ab","ba","ba"])
+print s.findSubstring("barfoofoobarthefoobarman",["bar","foo","the"])

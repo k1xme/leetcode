@@ -41,27 +41,67 @@ class ListNode:
 #             q = q.next
 #             p.next.next = tmp
 #             p = tmp
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
 
-class Solution:
-    # @param {ListNode} head
-    # @return {void} Do not return anything, modify head in-place instead.
+class Solution(object):
     def reorderList(self, head):
+        """
+        :type head: ListNode
+        :rtype: void Do not return anything, modify head in-place instead.
+        """
         if not head: return
-        
-        while head:
-            head.next = self.reverse(head.next)
-            head = head.next
     
-    def reverse(self, head):
-        if not head: return head
         dummy = ListNode(0)
-        p = dummy
-        while head:
-            tmp = head.next
-            head.next = p.next
-            p.next = head
-            head = tmp
-        return dummy.next
+        slow = fast = head
+        
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        
+        dummy.next = None
+        cur = slow.next
+        slow.next = None
+        
+        while cur:
+            tmp = dummy.next
+            dummy.next = cur
+            dummy.next.next = tmp
+            cur = cur.next
+
+        cur = head
+        slow = dummy.next
+        while slow:
+            tmp = cur.next
+            cur.next = slow
+            slow = slow.next
+            cur.next.next = tmp
+            cur = tmp
+        
+        
+# class Solution:
+#     # @param {ListNode} head
+#     # @return {void} Do not return anything, modify head in-place instead.
+#     def reorderList(self, head):
+#         if not head: return
+        
+#         while head:
+#             head.next = self.reverse(head.next)
+#             head = head.next
+    
+#     def reverse(self, head):
+#         if not head: return head
+#         dummy = ListNode(0)
+#         p = dummy
+#         while head:
+#             tmp = head.next
+#             head.next = p.next
+#             p.next = head
+#             head = tmp
+#         return dummy.next
 
 def printList(head):
     p = head

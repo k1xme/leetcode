@@ -1,0 +1,29 @@
+# Naive solution: find the anchor of `s`. O(n^2), cuz outter loop takes O(n/2), inner look takes O(n-1)
+# Adopting KMP can reduce complexity to O(n). 
+
+class Solution(object):
+    def shortestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if len(s) < 2: return s
+        original = s
+        s = s[::-1] + "*" + s
+        pre_suf_len = [0] * len(s)
+        
+        for i in range(1, len(s)):
+            cur_prefix_pos = pre_suf_len[i-1]
+
+            while cur_prefix_pos > 0 and s[i] != s[cur_prefix_pos]:
+                cur_prefix_pos = pre_suf_len[cur_prefix_pos-1]
+            
+            if s[cur_prefix_pos] != s[i]: continue
+            pre_suf_len[i] = cur_prefix_pos + 1
+
+        prefix = original[pre_suf_len[-1]:]
+
+        return prefix + original
+
+sol = Solution()
+print sol.shortestPalindrome("abb")

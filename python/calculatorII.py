@@ -4,54 +4,36 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        operators = []
-        nums = []
-        num = 0
-        sign = 1
-        # Return True if op1's order is lower than op2's
-        def is_lower(op1, op2):
-            if op1 in "+-": return op2 in "*/"
-            return False
+        if not s: return 0
         
-        def calculate(op, a, b):
-            if op == "+": nums.append(a+b)
-            elif op == "*": nums.append(a*b)
-            else:
-                sign = -1 if a*b < 0 else 1
-                nums.append(sign*(abs(a)/abs(b)))
-            
-        for char in s:
-            if char == " ": continue
-            if char.isdigit():
-                num = num*10 + int(char)
-                continue
-            else:
-                nums.append(sign*num)
+        op = '+' # First operator should always be '+'
+        rst = cur_res = 0
+        i = 0
+        
+        while i < len(s):
+            if s[i].isdigit():
                 num = 0
-                sign = 1
-            if char == "-":
-                sign *= -1
-                char = "+"
-            else: sign = 1
+                while i < len(s) and s[i].isdigit():
+                    num = num*10 + int(s[i])
+                    i += 1
 
-            if len(nums) < 2 or is_lower(operators[-1], char):
-                operators.append(char)
-                continue
-            
-            pre_op = operators.pop()
-            b,a = nums.pop(), nums.pop()
-            calculate(pre_op, a, b)
-            operators.append(char)
+                if op == '+': cur_res += num
+                elif op == '-': cur_res -= num
+                elif op == '*': cur_res *= num
+                elif op == '/':
+                    sign = -1 if cur_res < 0 else 1
+                    cur_res = sign* (abs(cur_res) / num)
+
+            else:
+                if s[i] in '+-':
+                    rst += cur_res
+                    cur_res = 0
+                    
+                op = s[i]
+                i += 1
         
-        nums.append(sign * num)
-
-        while operators:
-            b,a = nums.pop(), nums.pop()
-            op = operators.pop()
-            calculate(op, a, b)
-            
-        return nums.pop()
+        return rst + cur_res
 
 s = Solution()
 # print s.calculate("1*2-3/4+5*6-7*8+9/10")
-print s.calculate("1-1-1")
+print s.calculate("14-3/2")

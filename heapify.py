@@ -20,5 +20,9 @@ class Solution:
 
 s = Solution()
 a = [42,30,27,93,8,34,47,64,82,76,70,79,23,5,67,9]
+b = [42,30,27,93,8,34,47,64,82,76,70,79,23,5,67,9]
 s.heapify(a)
 print a
+import heapq
+heapq.heapify(b)
+print b

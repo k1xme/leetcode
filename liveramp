@@ -1,0 +1,24 @@
+1. This solution is based on Greedy strategy. The frog jumps to every leaf that in front of it in that second.
+
+There are some corner cases that we should handle separately before we go into the loop.
+- X <= D. we just return 0, since we can jump right to the destination.
+- X > D and N is 0, this should return -1, since there is no way to get to the end.
+- X > D and X - A[0] <= D, return 0, since the frog can use the first leaf to get to the end.
+
+If the input doesn't fall into any of the above situations, we should go into the loop, traverse A.
+
+The loop starts from second 1(zero-indexed) and we maintain a var `cur_pos` to track the current position of the frog. At a particular second `i`, the frog is facing the following situations:
+- The leaf in front of it is beyond its jumping range.
+- The leaf is behind it.
+- The leaf in front of it is within its jumping range.
+
+For situation 1 & 2, we should continue to the next loop. For situation 3, the frog will jump to the leaf and update the `cur_pos`, since we're adopting Greedy strategy.
+Then after the update, we check if the frog can reach the destination by checking `X-cur_pos <= D`. If so, we return the current second `i`. Otherwise continue the loop.
+
+Why Greedy strategy works? This is based on the observation that we want the frog to get as close as possible to the destination at every second and we don't care about how it gets to that position. For example, the input ([1,2,1,4,3], 7, 4). The earliest moment that the frog can get to the destination is second 3. The frog can chooses to jump to position 2 at second 1 and then jumps to position 4, then get to the end. Or it can choose to wait till second 3 then jumps to position 4 and then get to the end. So it doesn't matter how the frog get to the position. And it has no reason to jump backward, since it will only get further away from the destination in that second.
+
+This algorithm traverse the whole A in worst cases, so the time complexity is O(N).
+And we only use a var to track current position, so the space complexity is O(1).
+
+
+2. What excites me about working at LiveRamp is that I can get the chance to work on distributed systems and practical data infrastructure problems and I can learn from the top engineers in this industry, working with a bunch of brilliant engineers. I truely believe that it improves and inspires people to get better and work harder to work with greate people in a team. And LiveRamp is exactly the brilliant and energitc team that motivates people in it to reach their best.
